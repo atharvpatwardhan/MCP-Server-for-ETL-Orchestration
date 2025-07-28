@@ -1,9 +1,7 @@
 from mcp.server.fastmcp import FastMCP
-from tools.run_airflow_dag import run_airflow_dag
-from tools.check_airflow_status import check_airflow_status
-from tools.list_dags import list_dags_with_status
 from tools.s3_tools import create_bucket, upload_file, delete_bucket
-import os
+from tools.airflow_tools import check_airflow_status, list_dags_with_status, run_airflow_dag
+
 from dotenv import load_dotenv
 
 load_dotenv()
