@@ -2,6 +2,11 @@ from mcp.server.fastmcp import FastMCP
 from tools.run_airflow_dag import run_airflow_dag
 from tools.check_airflow_status import check_airflow_status
 from tools.list_dags import list_dags_with_status
+from tools.s3_tools import create_bucket, upload_file, delete_bucket
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 mcp = FastMCP("ETL Orchestration")
 
@@ -16,6 +21,19 @@ def check_airflow_status_tool(dag_id: str) -> str:
 @mcp.tool()
 def list_dags_with_status_tool() -> list:
     return list_dags_with_status()
+
+@mcp.tool()
+def create_s3_bucket_tool(bucket_name: str, region: str = None) -> str:
+    return create_bucket(bucket_name, region)
+
+@mcp.tool()
+def upload_s3_file_tool(bucket_name: str, object_key: str, file_path: str) -> str:
+    return upload_file(bucket_name, object_key, file_path)
+
+@mcp.tool()
+def delete_s3_bucket_tool(bucket_name: str, delete_objects: bool = False) -> str:
+    return delete_bucket(bucket_name, delete_objects)
+
 
 if __name__ == "__main__":
     mcp.run()
