@@ -1,48 +1,96 @@
-Overview
-========
+# 🧠 MCP Server for ETL Orchestration
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+> **Natural Language-Powered ETL Workflows using Airflow, AWS Glue, Athena, and S3**
 
-Project Contents
-================
+This project implements a **Model Context Protocol (MCP)**-compliant server that exposes a powerful set of ETL orchestration tools to LLM agents (like Claude or GPT), enabling them to control, monitor, and interact with real-world data infrastructure using natural language.
 
-Your Astro project contains the following files and folders:
+---
 
-- dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes one example DAG:
-    - `example_astronauts`: This DAG shows a simple ETL pipeline example that queries the list of astronauts currently in space from the Open Notify API and prints a statement for each astronaut. The DAG uses the TaskFlow API to define tasks in Python, and dynamic task mapping to dynamically print a statement for each astronaut. For more on how this DAG works, see our [Getting started tutorial](https://www.astronomer.io/docs/learn/get-started-with-airflow).
-- Dockerfile: This file contains a versioned Astro Runtime Docker image that provides a differentiated Airflow experience. If you want to execute other commands or overrides at runtime, specify them here.
-- include: This folder contains any additional files that you want to include as part of your project. It is empty by default.
-- packages.txt: Install OS-level packages needed for your project by adding them to this file. It is empty by default.
-- requirements.txt: Install Python packages needed for your project by adding them to this file. It is empty by default.
-- plugins: Add custom or community plugins for your project to this file. It is empty by default.
-- airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop DAGs in this project.
+## 🚀 Features
 
-Deploy Your Project Locally
-===========================
+- 🛰️ **Airflow Integration**  
+  Trigger DAGs, monitor their status, and list available workflows.
 
-1. Start Airflow on your local machine by running 'astro dev start'.
+- 🪣 **S3 Tools**  
+  Create buckets, upload files, delete buckets — programmatically or via LLM prompts.
 
-This command will spin up 4 Docker containers on your machine, each for a different Airflow component:
+- 🧬 **AWS Glue Integration**  
+  Start jobs, track job runs, fetch logs, and view available ETL scripts.
 
-- Postgres: Airflow's Metadata Database
-- Webserver: The Airflow component responsible for rendering the Airflow UI
-- Scheduler: The Airflow component responsible for monitoring and triggering tasks
-- Triggerer: The Airflow component responsible for triggering deferred tasks
+- 🔍 **Athena Query Engine**  
+  Execute SQL queries on S3 data, poll for status, fetch results, and list catalog metadata.
 
-2. Verify that all 4 Docker containers were created by running 'docker ps'.
+- 🧠 **LLM-Native Tool Interface**  
+  Fully MCP-compliant interface for Claude, GPT, and other AI assistants to programmatically operate the stack using natural language.
 
-Note: Running 'astro dev start' will start your project with the Airflow Webserver exposed at port 8080 and Postgres exposed at port 5432. If you already have either of those ports allocated, you can either [stop your existing Docker containers or change the port](https://www.astronomer.io/docs/astro/cli/troubleshoot-locally#ports-are-not-available-for-my-local-airflow-webserver).
+---
 
-3. Access the Airflow UI for your local Airflow project. To do so, go to http://localhost:8080/ and log in with 'admin' for both your Username and Password.
+## 🛠️ Available Tools
 
-You should also be able to access your Postgres Database at 'localhost:5432/postgres'.
+### 📌 Airflow
 
-Deploy Your Project to Astronomer
-=================================
+- Trigger DAGs
+- Check DAG status
+- List available DAGs with status
 
-If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://www.astronomer.io/docs/astro/deploy-code/
+### 📌 S3
 
-Contact
-=======
+- Create an S3 bucket
+- Upload a file to a bucket
+- Delete an S3 bucket (with optional object cleanup)
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support.
+### 📌 Glue
+
+- Run a Glue job with optional arguments
+- Check Glue job run status
+- Fetch Glue job logs
+- List all available Glue jobs
+
+### 📌 Athena
+
+- Run SQL queries on Athena with configurable output location
+- Check query execution status
+- Fetch query results
+- List available databases
+- List tables in a specific database
+
+---
+
+## ⚙️ Setup
+
+### 1. Clone the Repository and Install Dependencies
+
+```bash
+git clone https://github.com/atharvpatwardhan/mcp-etl-orchestrator.git
+cd mcp-etl-orchestrator
+pip install -r requirements.txt
+```
+
+### 2. Configure Environment Variables
+
+Create a `.env` file in the root directory and populate it with your AWS credentials:
+
+```dotenv
+# AWS Credentials
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+AWS_DEFAULT_REGION=your-aws-region
+```
+
+### 3. Update Airflow Credentials in tools/airflow_config.py (optional)
+
+# Airflow API Configuration
+
+```
+AIRFLOW_API_BASE=http://localhost:8080/api/v1
+AIRFLOW_USERNAME=admin
+AIRFLOW_PASSWORD=admin
+```
+
+### 4. Start the MCP Server
+
+```bash
+python main.py
+```
+
+Once the server is running, connect your Claude Desktop or any MCP-compatible client to the server and begin using the tools with natural language commands!
