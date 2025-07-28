@@ -2,6 +2,7 @@ from mcp.server.fastmcp import FastMCP
 from tools.s3_tools import create_bucket, upload_file, delete_bucket
 from tools.airflow_tools import check_airflow_status, list_dags_with_status, run_airflow_dag
 from tools.glue_tools import run_glue_job, get_glue_job_status, list_glue_jobs, get_glue_job_logs
+from tools.athena_tools import run_athena_query, get_query_status, get_query_results, list_databases, list_tables
 
 from dotenv import load_dotenv
 
@@ -48,6 +49,27 @@ def list_glue_jobs_tool() -> list:
 @mcp.tool()
 def get_glue_job_logs_tool(job_run_id: str) -> list:
     return get_glue_job_logs(job_run_id)
+
+@mcp.tool()
+def run_athena_query_tool(query: str, database: str, s3_output_location: str) -> str:
+    return run_athena_query(query, database, s3_output_location)
+
+@mcp.tool()
+def get_athena_query_status_tool(query_execution_id: str) -> str:
+    return get_query_status(query_execution_id)
+
+@mcp.tool()
+def get_athena_query_results_tool(query_execution_id: str, max_results: int = 100) -> list:
+    return get_query_results(query_execution_id, max_results)
+
+@mcp.tool()
+def list_athena_databases_tool() -> list:
+    return list_databases()
+
+@mcp.tool()
+def list_athena_tables_tool(database: str) -> list:
+    return list_tables(database)
+
 
 
 if __name__ == "__main__":
