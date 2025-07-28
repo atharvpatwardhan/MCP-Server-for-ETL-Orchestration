@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "airflowOrchestrator": {
+      "command": "python",
+      "args": ["local_project_path/mcp_server/main.py"]
+    }
+  }
+}
